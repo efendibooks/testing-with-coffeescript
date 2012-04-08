@@ -1,2 +1,2 @@
 class Item
-  constructor: (@title, @desc, @cost) ->
+  constructor: (@id, @title, @desc, @cost) ->

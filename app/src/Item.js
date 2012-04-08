@@ -2,7 +2,8 @@ var Item;
 
 Item = (function() {
 
-  function Item(title, desc, cost) {
+  function Item(id, title, desc, cost) {
+    this.id = id;
     this.title = title;
     this.desc = desc;
     this.cost = cost;

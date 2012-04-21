@@ -2,13 +2,11 @@ var Basket;
 
 Basket = (function() {
 
-  function Basket() {}
-
-  Basket.prototype.items = [];
-
-  Basket.prototype.distinctCount = 0;
-
-  Basket.prototype.totalCount = 0;
+  function Basket() {
+    this.items = [];
+    this.distinctCount = 0;
+    this.totalCount = 0;
+  }
 
   Basket.prototype.add = function(item, quantity) {
     var curItemLoc;
@@ -18,12 +16,50 @@ Basket = (function() {
     } else {
       this.items.push({
         "item_id": item.id,
-        "quantity": quantity
+        "quantity": quantity,
+        "item": item
       });
       this.distinctCount++;
     }
-    this.totalCount++;
-    return console.log(this.items);
+    return this.totalCount += quantity;
+  };
+
+  Basket.prototype.remove = function(item_id, quantity) {
+    var item, loc, removeAll, removeQuantity,
+      _this = this;
+    if (quantity == null) quantity = "all";
+    if (!this.itemExistsInBasket(item_id)) return false;
+    removeAll = function(item_id) {
+      var i;
+      i = _this.getItemLocation(item_id);
+      _this.items[i] = null;
+      return _this.updateItems();
+    };
+    removeQuantity = function(quantity, item_loc) {
+      return _this.items[item_loc].quantity -= quantity;
+    };
+    if (quantity === "all") {
+      return removeAll(item_id);
+    } else {
+      loc = this.getItemLocation(item_id);
+      item = this.items[loc];
+      if (item.quantity <= quantity) {
+        return removeAll(item_id);
+      } else {
+        return removeQuantity(quantity, loc);
+      }
+    }
+  };
+
+  Basket.prototype.calculateTotal = function() {
+    var i, total, _i, _len, _ref;
+    total = 0;
+    _ref = this.items;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      i = _ref[_i];
+      total += i.item.cost * i.quantity;
+    }
+    return total;
   };
 
   Basket.prototype.getQuantity = function(item_id) {
@@ -56,6 +92,17 @@ Basket = (function() {
       ++count;
     }
     return false;
+  };
+
+  Basket.prototype.updateItems = function() {
+    var i, newArr, _i, _len, _ref;
+    newArr = [];
+    _ref = this.items;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      i = _ref[_i];
+      if (i !== null) newArr.push(i);
+    }
+    return this.items = newArr;
   };
 
   return Basket;

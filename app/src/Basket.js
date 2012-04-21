@@ -38,9 +38,7 @@ Basket = (function() {
     removeQuantity = function(quantity, item_loc) {
       return _this.items[item_loc].quantity -= quantity;
     };
-    if (quantity === "all") {
-      return removeAll(item_id);
-    } else {
+    if (quantity !== "all") {
       loc = this.getItemLocation(item_id);
       item = this.items[loc];
       if (item.quantity <= quantity) {
@@ -48,6 +46,8 @@ Basket = (function() {
       } else {
         return removeQuantity(quantity, loc);
       }
+    } else {
+      return removeAll(item_id);
     }
   };
 

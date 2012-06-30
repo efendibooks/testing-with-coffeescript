@@ -69,6 +69,14 @@ Basket = (function() {
     return total;
   };
 
+  Basket.prototype.applyDiscount = function(amount) {
+    amount = Math.abs(amount);
+    if (amount > 100) {
+      amount = 100;
+    }
+    return this.calculateTotal() * (1 - (amount / 100));
+  };
+
   Basket.prototype.getQuantity = function(item_id) {
     var i, _i, _len, _ref;
     _ref = this.items;

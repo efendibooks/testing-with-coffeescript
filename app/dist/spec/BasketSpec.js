@@ -91,6 +91,18 @@ describe("Basket", function() {
       return expect(test.basket.calculateTotal()).toEqual(1750);
     });
   });
+  describe("discounting the basket", function() {
+    it("should correctly apply discounts", function() {
+      expect(test.basket.applyDiscount(10)).toEqual(45);
+      return expect(test.basket.applyDiscount(50)).toEqual(25);
+    });
+    it("should not be able to apply a discount more than 100%", function() {
+      return expect(test.basket.applyDiscount(120)).toEqual(0);
+    });
+    return it("should be able to deal with negative numbers and treat them the same as positive numbers", function() {
+      return expect(test.basket.applyDiscount(-20)).toEqual(40);
+    });
+  });
   return describe("helper functions in the Basket class", function() {
     describe("getQuantity", function() {
       it("should return false if passed an id that is not in array", function() {

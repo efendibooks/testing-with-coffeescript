@@ -16,7 +16,7 @@ describe("Item", function() {
       expect(test.item.cost).toEqual(49.50);
       return expect(test.item.desc).toEqual("Super awesome");
     });
-    return it("should not be able to update the ID property", function() {
+    return it("should not be able to update the ID property as its protected", function() {
       test.item.update({
         "title": "The Magic Mouse",
         "id": 49

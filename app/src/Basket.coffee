@@ -42,6 +42,11 @@ class Basket
       total += i.item.cost * i.quantity
     total
 
+  applyDiscount: (amount) ->
+    amount = Math.abs(amount)
+    if amount > 100 then amount = 100
+    (@calculateTotal() * (1-(amount/100)))
+
   getQuantity: (item_id) ->
     for i in @items
       return i.quantity if i.item_id is item_id

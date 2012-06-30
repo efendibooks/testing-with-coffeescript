@@ -79,6 +79,15 @@ describe "Basket", ->
       test.basket.add(test.item, 2)
       expect(test.basket.calculateTotal()).toEqual 1750
 
+  describe "discounting the basket", ->
+    it "should correctly apply discounts", ->
+      expect(test.basket.applyDiscount(10)).toEqual 45
+      expect(test.basket.applyDiscount(50)).toEqual 25
+    it "should not be able to apply a discount more than 100%", ->
+      expect(test.basket.applyDiscount(120)).toEqual 0
+    it "should be able to deal with negative numbers and treat them the same as positive numbers", ->
+      expect(test.basket.applyDiscount(-20)).toEqual 40
+
   describe "helper functions in the Basket class", ->
     describe "getQuantity", ->
 
@@ -113,8 +122,5 @@ describe "Basket", ->
         expect(test.basket.getItemLocation("hello")).toBeFalsy()
 
 
-  #it "should be able to calculate total price", ->
-    #test.basket.calculate()
-    #expect(test.basket.calculate()).toEqual 799
 
 

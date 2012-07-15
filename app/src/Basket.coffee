@@ -3,6 +3,7 @@ class Basket
     @items = []
     @distinctCount = 0
     @totalCount = 0
+    @discount = 0
 
   add: (item, quantity) ->
     if @itemExistsInBasket(item.id)
@@ -40,12 +41,13 @@ class Basket
     total = 0
     for i in @items
       total += i.item.cost * i.quantity
-    total
+    (total - ((@discount/100)) * total)
 
   applyDiscount: (amount) ->
     amount = Math.abs(amount)
     if amount > 100 then amount = 100
-    (@calculateTotal() * (1-(amount/100)))
+    @discount = amount
+    @calculateTotal()
 
   getQuantity: (item_id) ->
     for i in @items

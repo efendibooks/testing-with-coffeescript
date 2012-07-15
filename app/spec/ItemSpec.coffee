@@ -39,3 +39,12 @@ describe "Item", ->
       expect(test.item.isProtected("desc")).toBeFalsy()
       expect(test.item.isProtected("foo")).toBeFalsy()
 
+  describe "getting ratings from websites", ->
+    beforeEach ->
+      spyOn(test.item, 'getRatings').andCallFake ->
+        JSON.parse('{"ratings":[{"rating":4,"review":"This is a really great product","source":"Amazon"},{"rating":1,"review":"I didnt really like it that much it wasnt very good","source":"PC World"},{"rating":3,"review":"Its pretty average.","source":"Ebay"}]}')
+
+    it "should return three latest ratings", ->
+      expect(test.item.getRatings().ratings.length).toEqual 3
+    it "should be able to parse an individual rating's score", ->
+      expect(test.item.getRatings().ratings[0].rating).toEqual 4

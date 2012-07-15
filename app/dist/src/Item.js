@@ -42,6 +42,8 @@ Item = (function() {
     return false;
   };
 
+  Item.prototype.getRatings = function() {};
+
   return Item;
 
 })();

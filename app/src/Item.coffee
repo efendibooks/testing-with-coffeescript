@@ -14,3 +14,6 @@ class Item
     for pF in @protectedFields
       return true if field is pF
     false
+
+  getRatings: ->
+

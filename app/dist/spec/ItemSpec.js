@@ -43,13 +43,26 @@ describe("Item", function() {
       return expect(test.item.desc).toEqual("Super awesome");
     });
   });
-  return describe("isProtected()", function() {
+  describe("isProtected()", function() {
     it("should return true if field is protected", function() {
       return expect(test.item.isProtected("id")).toBeTruthy();
     });
     return it("should return false if field is not protected or does not exist", function() {
       expect(test.item.isProtected("desc")).toBeFalsy();
       return expect(test.item.isProtected("foo")).toBeFalsy();
+    });
+  });
+  return describe("getting ratings from websites", function() {
+    beforeEach(function() {
+      return spyOn(test.item, 'getRatings').andCallFake(function() {
+        return JSON.parse('{"ratings":[{"rating":4,"review":"This is a really great product","source":"Amazon"},{"rating":1,"review":"I didnt really like it that much it wasnt very good","source":"PC World"},{"rating":3,"review":"Its pretty average.","source":"Ebay"}]}');
+      });
+    });
+    it("should return three latest ratings", function() {
+      return expect(test.item.getRatings().ratings.length).toEqual(3);
+    });
+    return it("should be able to parse an individual rating's score", function() {
+      return expect(test.item.getRatings().ratings[0].rating).toEqual(4);
     });
   });
 });

@@ -88,6 +88,10 @@ describe "Basket", ->
     it "should be able to deal with negative numbers and treat them the same as positive numbers", ->
       expect(test.basket.applyDiscount(-20)).toEqual 40
 
+    it "should persist the discount", ->
+      expect(test.basket.applyDiscount(10)).toEqual 45
+      expect(test.basket.calculateTotal()).toEqual 45
+
   describe "helper functions in the Basket class", ->
     describe "getQuantity", ->
 

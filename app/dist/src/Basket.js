@@ -9,6 +9,7 @@ Basket = (function() {
     this.items = [];
     this.distinctCount = 0;
     this.totalCount = 0;
+    this.discount = 0;
   }
 
   Basket.prototype.add = function(item, quantity) {
@@ -66,7 +67,7 @@ Basket = (function() {
       i = _ref[_i];
       total += i.item.cost * i.quantity;
     }
-    return total;
+    return total - (this.discount / 100) * total;
   };
 
   Basket.prototype.applyDiscount = function(amount) {
@@ -74,7 +75,8 @@ Basket = (function() {
     if (amount > 100) {
       amount = 100;
     }
-    return this.calculateTotal() * (1 - (amount / 100));
+    this.discount = amount;
+    return this.calculateTotal();
   };
 
   Basket.prototype.getQuantity = function(item_id) {

@@ -80,17 +80,24 @@ describe "Basket", ->
       expect(test.basket.calculateTotal()).toEqual 1750
 
   describe "discounting the basket", ->
+    beforeEach ->
+      @addMatchers
+        toBeDiscounted: (orig,discount) ->
+          actual = @actual
+          @message = -> "Expected #{actual} to be #{discount}% of #{orig}"
+          actual is (orig * (1-(discount/100)))
+
     it "should correctly apply discounts", ->
-      expect(test.basket.applyDiscount(10)).toEqual 45
-      expect(test.basket.applyDiscount(50)).toEqual 25
+      expect(test.basket.applyDiscount(10)).toBeDiscounted(50, 10)
+      expect(test.basket.applyDiscount(50)).toBeDiscounted(50, 50)
     it "should not be able to apply a discount more than 100%", ->
-      expect(test.basket.applyDiscount(120)).toEqual 0
+      expect(test.basket.applyDiscount(120)).toBeDiscounted(50, 100)
     it "should be able to deal with negative numbers and treat them the same as positive numbers", ->
-      expect(test.basket.applyDiscount(-20)).toEqual 40
+      expect(test.basket.applyDiscount(-20)).toBeDiscounted(50, 20)
 
     it "should persist the discount", ->
-      expect(test.basket.applyDiscount(10)).toEqual 45
-      expect(test.basket.calculateTotal()).toEqual 45
+      expect(test.basket.applyDiscount(10)).toBeDiscounted(50, 10)
+      expect(test.basket.calculateTotal()).toBeDiscounted(50, 10)
 
   describe "helper functions in the Basket class", ->
     describe "getQuantity", ->

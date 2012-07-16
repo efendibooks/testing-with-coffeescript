@@ -92,19 +92,31 @@ describe("Basket", function() {
     });
   });
   describe("discounting the basket", function() {
+    beforeEach(function() {
+      return this.addMatchers({
+        toBeDiscounted: function(orig, discount) {
+          var actual;
+          actual = this.actual;
+          this.message = function() {
+            return "Expected " + actual + " to be " + discount + "% of " + orig;
+          };
+          return actual === (orig * (1 - (discount / 100)));
+        }
+      });
+    });
     it("should correctly apply discounts", function() {
-      expect(test.basket.applyDiscount(10)).toEqual(45);
-      return expect(test.basket.applyDiscount(50)).toEqual(25);
+      expect(test.basket.applyDiscount(10)).toBeDiscounted(50, 10);
+      return expect(test.basket.applyDiscount(50)).toBeDiscounted(50, 50);
     });
     it("should not be able to apply a discount more than 100%", function() {
-      return expect(test.basket.applyDiscount(120)).toEqual(0);
+      return expect(test.basket.applyDiscount(120)).toBeDiscounted(50, 100);
     });
     it("should be able to deal with negative numbers and treat them the same as positive numbers", function() {
-      return expect(test.basket.applyDiscount(-20)).toEqual(40);
+      return expect(test.basket.applyDiscount(-20)).toBeDiscounted(50, 20);
     });
     return it("should persist the discount", function() {
-      expect(test.basket.applyDiscount(10)).toEqual(45);
-      return expect(test.basket.calculateTotal()).toEqual(45);
+      expect(test.basket.applyDiscount(10)).toBeDiscounted(50, 10);
+      return expect(test.basket.calculateTotal()).toBeDiscounted(50, 10);
     });
   });
   return describe("helper functions in the Basket class", function() {

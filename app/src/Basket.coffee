@@ -24,8 +24,7 @@ class Basket
 
     removeAll = (item_id) =>
       i = @getItemLocation item_id
-      @items[i] = null
-      @updateItems()
+      @items.splice(i,i)
 
     removeQuantity = (quantity, item_loc) =>
       @items[item_loc].quantity -= quantity
@@ -65,17 +64,3 @@ class Basket
       return count if i.item_id is item_id
       ++count
     false
-
-  updateItems: ->
-    newArr = []
-    for i in @items
-      unless i is null
-        newArr.push i
-    @items = newArr
-
-
-
-
-
-
-

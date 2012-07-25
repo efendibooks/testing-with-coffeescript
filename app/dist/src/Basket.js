@@ -39,8 +39,7 @@ Basket = (function() {
     removeAll = function(item_id) {
       var i;
       i = _this.getItemLocation(item_id);
-      _this.items[i] = null;
-      return _this.updateItems();
+      return _this.items.splice(i, i);
     };
     removeQuantity = function(quantity, item_loc) {
       return _this.items[item_loc].quantity -= quantity;
@@ -105,19 +104,6 @@ Basket = (function() {
       ++count;
     }
     return false;
-  };
-
-  Basket.prototype.updateItems = function() {
-    var i, newArr, _i, _len, _ref;
-    newArr = [];
-    _ref = this.items;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      i = _ref[_i];
-      if (i !== null) {
-        newArr.push(i);
-      }
-    }
-    return this.items = newArr;
   };
 
   return Basket;
